@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <title>Quotes</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'first_css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome, {{ request.session.first_name }} {{ request.session.last_name }}</h1><br>
+            <a href="myaccount/{{ request.session.user_id }}">Edit My Account</a>
+            <form class="inline" action="/logout" method="">
+                {% csrf_token %}
+                    <input type='submit' value='Logout'>
+            </form>
+            <h2>Add a Quote!</h2>
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/success/post_quote" method="POST">
+            {% csrf_token %}
+                <label for='author'>Author:</label>
+                <input type="text" name="author"><br>
+                <label for='quote'>Quote:</label>
+                <textarea name="quote" id="" cols="50" rows=""></textarea><br>
+                <input type="submit" value = "Add this quote">
+        </form>
+    </div>
+        {% for i in quotes reversed %}
+        <div class="container">
+            <p>{{ i.author }}: {{ i.quote }}</p>
+            <h2>Posted by: <a href="user/{{ i.user_id }}">{{ i.user.first_name }} {{ i.user.last_name }}</a></h2>
+            <h3>{{ i.like_count }} other users liked this quote</h3>
+            <form action="/{{i.id}}/like" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name = "user_id" value = "{{ request.session.user_id }}">
+                <input type="hidden" name = "id" value = "{{ i.id }}">
+                <input type="submit" value = "Like">
+            </form>
+            {% if i.user_id == request.session.user_id %}
+                <a href="/{{i.id}}/del_quote">Delete</a>
+            {% endif %}
+        </div>
+       {% endfor %} 
+</body>
+</html>

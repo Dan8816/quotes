@@ -1,0 +1,47 @@
+<!Doctype html>
+<html>
+<head>
+    <title>Login and Registration</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'first_css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Registration</h1><br>
+        </div>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action='/create' method='post'>
+            {% csrf_token %}
+            <label for='first_name'>First Name:</label>
+            <input type='text' name='first_name' value=""><br/>
+            <label for='last_name'>Last Name:</label>
+            <input type='text' name='last_name' value="" ><br/>
+            <label for='email'>Email:</label>
+            <input type='text' name='email' value="" ><br/>
+            <label for='password'>Password:</label>
+            <input type='password' name='password'/><br/>
+            <label for='confirmPassword'>Confirm Password:</label>
+            <input type='password' name='confirmpassword'/><br/>
+            <input type='submit' value='Register'>
+        </form>
+        <div class="header">
+            <h1>Login</h1>
+        </div>
+        <form action="/login" method="post">
+            {% csrf_token %}
+            <label for="email">Email:</label>
+            <input type="text" name="email">
+            <label for="password">Password:</label>
+            <input type="text" name="password">
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</body>
+</html>
