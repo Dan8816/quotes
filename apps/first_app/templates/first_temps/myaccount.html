@@ -25,11 +25,11 @@
         <form action='/update' method='post'>
         {% csrf_token %}
             <label for='first_name'>First Name:</label>
-            <input type='text' name='first_name' value=""><br/>
+            <input type='text' name='first_name' value="{{request.session.first_name}}"><br/>
             <label for='last_name'>Last Name:</label>
-            <input type='text' name='last_name' value="" ><br/>
+            <input type='text' name='last_name' value="{{request.session.last_name}}" ><br/>
             <label for='email'>Email:</label>
-            <input type='text' name='email' value="" ><br/>
+            <input type='text' name='email' value="{{request.session.email}}" ><br/>
             <input type='submit' value='Update'>
         </form>
     </div>
