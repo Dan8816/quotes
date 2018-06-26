@@ -117,7 +117,8 @@ def thisUserQuotes(request, user_id):
 def like(request, id):
     this_user = User.objects.get(id=request.POST['user_id'])
     this_quote = Quote.objects.get(id=id)
-    this_quote.likes.add(this_user)
-    this_quote.like_count += 1
-    this_quote.save()
+    if this_quote.user_id != request.session['user_id']:
+        this_quote.likes.add(this_user)
+        this_quote.like_count += 1
+        this_quote.save()
     return redirect('/success')
